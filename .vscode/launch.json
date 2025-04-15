@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Remote JVM on LS Debug",
+            "projectRoot": "${workspaceFolder}",
+            "request": "attach",
+            "hostName": "localhost",
+            "preLaunchTask": "Wait Remote Debugger Server",
+            "port": 5050
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+API: 
+
+http://gt74irl5c5.execute-api.localhost.localstack.cloud:4566/Prod/hello
+
+https://japzr5k9hf.execute-api.amazonaws.com:4566/Prod/ping 
+
+
+http://japzr5k9hf.execute-api.localhost.localstack.cloud:4566/Prod/ping 
+
+https://k1mvvrem27.execute-api.amazonaws.com:4566/Prod/ping
+
+
+http://k1mvvrem27.execute-api.localhost.localstack.cloud:4566/Prod/ping 
+
+https://z1p886l07s.execute-api.amazonaws.com:4566/Prod/ping
+
+http://z1p886l07s.execute-api.localhost.localstack.cloud:4566/Prod/ping 
+
+samlocal deploy --config-file=samconfig.toml --no-confirm-changeset
