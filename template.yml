@@ -13,7 +13,23 @@ Resources:
       Runtime: java21
       CodeUri: .
       MemorySize: 512
-      Policies: AWSLambdaBasicExecutionRole
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - DynamoDBCrudPolicy:
+            TableName: !Ref MessageTable
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:DescribeTable
+                - dynamodb:GetItem
+                - dynamodb:PutItem
+                - dynamodb:UpdateItem
+                - dynamodb:DeleteItem
+                - dynamodb:Query
+                - dynamodb:Scan
+              Resource: !GetAtt MessageTable.Arn
+
       Timeout: 30
       Events:
         ProxyResource:
@@ -21,11 +37,30 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: any
-      Environment:
-        Variables:
-          _JAVA_OPTIONS: "-Xshare:off -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:5050"
+
+  MessageTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Message
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 2
+        WriteCapacityUnits: 2
+
 
 Outputs:
+
+  DynamoDBTableName:
+    Description: DynamoDB Table Name for Messages
+    Value: !Ref MessageTable
+    Export:
+      Name: DynamoDBTableName
+
   LocalStackLambdaApiPing:
     Description: URL for Lambda application running on Localstack
     Value: !Sub 'http://${ServerlessRestApi}.execute-api.localhost.localstack.cloud:4566/Prod/ping'
