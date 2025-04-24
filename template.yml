@@ -37,6 +37,11 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: any
+      Environment:
+        Variables:
+          _JAVA_OPTIONS: "-Xshare:off -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:5050"
+          AWS_ENDPOINT: "https://localhost.localstack.cloud:4566"
+          AWS_REGION: "us-west-2"
 
   MessageTable:
     Type: AWS::DynamoDB::Table
