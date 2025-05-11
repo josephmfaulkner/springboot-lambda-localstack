@@ -5,6 +5,17 @@ Globals:
   Api:
     EndpointConfiguration: REGIONAL
 
+Parameters:
+  Stage:
+    Type: String
+    Default: env
+  LocalDev:
+    Type: String
+    Default: false
+
+Conditions:
+  IsLocalDevEnv: !Equals [ !Ref LocalDev, true ]
+
 Resources:
 
   ApiGatewayApi:
@@ -12,10 +23,11 @@ Resources:
     Properties:
       Name: ApiGatewayApi
       Description: Application REST API Endpoint
-      StageName: prod
+      StageName: !Ref Stage
       PropagateTags: true
       Tags:
         _custom_id_: appapi
+
 
   SpringBootLambdaFunction:
     Type: AWS::Serverless::Function
@@ -54,9 +66,12 @@ Resources:
 
       Environment:
         Variables:
-          _JAVA_OPTIONS: "-Xshare:off -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:5050"
-          AWS_ENDPOINT: "https://localhost.localstack.cloud:4566"
-          AWS_REGION: "us-west-2"
+          !If
+            - IsLocalDevEnv
+            - _JAVA_OPTIONS: "-Xshare:off -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:5050"
+              AWS_ENDPOINT: "https://localhost.localstack.cloud:4566"
+              AWS_REGION: "us-west-2"
+            - {} # No variables needed for non-local environments
 
   MessageTable:
     Type: AWS::DynamoDB::Table
@@ -83,11 +98,11 @@ Outputs:
 
   LocalStackLambdaApiPing:
     Description: URL for Lambda application running on Localstack
-    Value: !Sub 'http://${ApiGatewayApi}.execute-api.localhost.localstack.cloud:4566/Prod/ping'
+    Value: !Sub 'http://${ApiGatewayApi}.execute-api.localhost.localstack.cloud:4566/${Stage}/ping'
     Export:
       Name: LocalStackLambdaApiPing
   CloudLambdaApi:
     Description: URL for application when App is deployed to AWS Cloud
-    Value: !Sub 'https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/ping'
+    Value: !Sub 'https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/ping'
     Export:
       Name: CloudLambdaApi

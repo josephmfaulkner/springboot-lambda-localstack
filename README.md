@@ -31,9 +31,9 @@ docker compose up
 Then, in another tab, run: 
 ```bash
 samlocal build
-samlocal deploy --config-file=samconfig.toml --no-confirm-changeset
+samlocal deploy --config-file=samconfig_local.yaml --no-confirm-changeset
 ```
-After running these steps, you should be presented with an endpoint you can use to test the API on local (the API ID in the URL will be different): 
+After running these steps, you should be presented with an endpoint you can use to test the API on local: 
 ```
 CloudFormation outputs from deployed stack
 ------------------------------------------
@@ -41,11 +41,18 @@ Outputs
 ------------------------------------------
 Key                 LocalStackLambdaApiPing                                                                          
 Description         URL for Lambda application running on Localstack                                                 
-Value               http://<REST_API>.execute-api.localhost.localstack.cloud:4566/Prod/ping  
+Value               http://appapi.execute-api.localhost.localstack.cloud:4566/local/ping  
 ```
 
+You can try this endpoint yourself from your terminal:
 ```bash
-curl http://xxxxxxx.execute-api.localhost.localstack.cloud:4566/Prod/ping | jq
+curl http://appapi.execute-api.localhost.localstack.cloud:4566/local/ping   | jq
+```
+After some delay, you should see a response like this: 
+```
+{
+  "pong": "Hello from the Ping Controller!"
+}
 ```
 
 

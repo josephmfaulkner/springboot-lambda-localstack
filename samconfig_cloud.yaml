@@ -1,0 +1,16 @@
+version: 0.1
+default:
+  deploy:
+    parameters:
+      parameter_overrides:
+        - "Stage=cloud-testing"
+        - "LocalDev=false"
+      stack_name: my-app-stack
+      resolve_s3: true
+      s3_prefix: sam-app
+      region: us-west-2
+      confirm_changeset: true 
+      capabilities:
+        - CAPABILITY_IAM
+      disable_rollback: false
+      image_repositories: []
