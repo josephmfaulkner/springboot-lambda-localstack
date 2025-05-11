@@ -9,6 +9,7 @@ Resources:
   SpringBootLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
+      FunctionName: SpringBootAPIHandler
       Handler: com.javatechie.StreamLambdaHandler::handleRequest
       Runtime: java21
       CodeUri: .
