@@ -35,7 +35,7 @@ Resources:
       FunctionName: SpringBootAPIHandler
       Handler: com.javatechie.StreamLambdaHandler::handleRequest
       Runtime: java21
-      CodeUri: .
+      CodeUri: ./lambda-functions/restApi
       MemorySize: 512
       Policies:
         - AWSLambdaBasicExecutionRole
