@@ -18,6 +18,8 @@ Conditions:
 
 Resources:
 
+
+
   ApiGatewayApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -28,14 +30,41 @@ Resources:
       Tags:
         _custom_id_: appapi
 
-
   SpringBootLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: SpringBootAPIHandler
       Handler: com.javatechie.StreamLambdaHandler::handleRequest
       Runtime: java21
-      CodeUri: ./lambda-functions/restApi
+
+
+      # This works but I want to use live reloading on local. I still want to use this when deploying to the cloud. 
+      #CodeUri: ./lambda-functions/restApi
+
+      # This doesn't work because the folder structure doesn't have the artifacts in the required structure
+      # It needs to be stuctured like this: 
+      # * artifactsFolder/
+      # -- com/
+      # -- lib/
+      # -- application.yml
+      #CodeUri:
+      #  Bucket: hot-reload
+      #  Key: /home/jfaulkner/CodeDemos/LambdaTuts/aws-lambda/lambda-functions/restApi/target
+
+      # This doen't work either because while the artifacts are in the correct structure, they're inside a .zip archive — they
+      # need to be inside a directory instead. 
+      #CodeUri: 
+      #  Bucket: hot-reload
+      #  Key: /home/jfaulkner/CodeDemos/LambdaTuts/aws-lambda/lambda-functions/restApi/target/spring-boot-lambda-1.0-SNAPSHOT-lambda-package.zip
+
+      # This works but I had to create TestPackaged_SpringBootLambdaFunction manually. I need something like this created automatically 
+      # when I rebuild the project locally or when changes are detected in the source code when hot-reload is enabled 
+      # (haven't implemented that yet)
+      # I'm only including this folder in the repository at the moment for illustrative purposes. 
+      CodeUri:
+        Bucket: hot-reload
+        Key: /home/jfaulkner/CodeDemos/LambdaTuts/aws-lambda/lambda-functions/restApi/TestPackaged_SpringBootLambdaFunction
+
       MemorySize: 512
       Policies:
         - AWSLambdaBasicExecutionRole
