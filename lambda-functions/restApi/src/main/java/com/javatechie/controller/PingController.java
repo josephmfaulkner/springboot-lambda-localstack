@@ -15,6 +15,8 @@ public class PingController {
     public Map<String, String> ping() {
         Map<String, String> pong = new HashMap<>();
         pong.put("pong", "Hello from the Lambda REST API!");
+
+        
         return pong;
     }
 }
