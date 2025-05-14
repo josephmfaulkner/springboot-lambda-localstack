@@ -1,5 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
+Transform: 
+  - AWS::LanguageExtensions
+  - AWS::Serverless-2016-10-31
 Description: AWS Serverless Spring Boot 2 API - org.example::spring-boot-lambda
 Globals:
   Api:
@@ -12,6 +14,7 @@ Parameters:
   LocalDev:
     Type: String
     Default: false
+    
 
 Conditions:
   IsLocalDevEnv: !Equals [ !Ref LocalDev, true ]
@@ -28,7 +31,6 @@ Resources:
       Tags:
         _custom_id_: appapi
 
-
   SpringBootLambdaFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -36,6 +38,8 @@ Resources:
       Handler: com.javatechie.StreamLambdaHandler::handleRequest
       Runtime: java21
       CodeUri: ./lambda-functions/restApi
+      #  Bucket: hot-reload
+      #  Key: $HOST_LAMBDA_DIR/lambda-functions/restApi/target/spring-boot-rest-api-lambda
       MemorySize: 512
       Policies:
         - AWSLambdaBasicExecutionRole
