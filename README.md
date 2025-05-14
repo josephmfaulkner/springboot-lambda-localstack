@@ -8,6 +8,7 @@ The project defines a simple `/ping` resource that can accept `GET` requests wit
 
 
 ## Pre-requisites
+* [Visual Studio Code](https://code.visualstudio.com/)
 * [Java21](https://openjdk.org/projects/jdk/21/)
 * [Docker](https://docs.docker.com/get-started/get-docker/)
 * [Docker Compose](https://docs.docker.com/compose/)
@@ -17,8 +18,8 @@ The project defines a simple `/ping` resource that can accept `GET` requests wit
 * [SAM Local](https://github.com/localstack/aws-sam-cli-local)
 
 
-## Building the project (optional)
-You can build the Java project directly using the Maven wrapper if you wish. This is optional since samlocal build will build the java project automatically. 
+## Building the project
+Build the Java project using the Maven wrapper
 ```bash
 ./mvnw clean install
 ```
@@ -30,7 +31,7 @@ docker compose up
 ```
 Then, in another tab, run: 
 ```bash
-samlocal build
+samlocal build --template-file=template_local.yml
 samlocal deploy --config-file=samconfig_local.yaml --no-confirm-changeset
 ```
 After running these steps, you should be presented with an endpoint you can use to test the API on local: 
@@ -54,6 +55,44 @@ After some delay, you should see a response like this:
   "pong": "Hello from the Ping Controller!"
 }
 ```
+
+## Make a change, rebuild and reload
+Let's try making a small change to the API and rebuilding the project to see the change running through the API endpoint.
+
+Change line 17 of `
+lambda-functions/restApi/src/main/java/com/javatechie/controller/PingController.java`
+
+For example:
+```
+pong.put("pong", "Hello from the Lambda REST API! Nice to meet you!!!");
+```
+Then, run this command to rebuild the project:
+```
+# don't run the clean task or this won't work
+./mvnw package -Dmaven.test.skip
+```
+Let's see what happens now when we hit the api endpoint again
+```bash
+curl http://appapi.execute-api.localhost.localstack.cloud:4566/local/ping   | jq
+```
+You should now see a response with the new message:
+```
+{
+  "pong": "Hello from the Lambda REST API! Nice to meet you!!!"
+}
+```
+## Live Debugging
+Set a few breakpoints in your VS Code IDE, select `Run and Debug` from the left side menu and run the `Remote JVM on LS Debug` launch configuration. Once you hit an API endpoint, the livedebugging should kick in.
+
+
+
+## Deploying to the cloud
+
+```
+samlocal build --template-file=template_local.yml
+samlocal deploy --config-file=samconfig_local.yaml --no-confirm-changeset
+```
+
 
 
 ## Testing locally with the SAM CLI
