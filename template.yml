@@ -1,5 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Transform: AWS::Serverless-2016-10-31
+Transform: 
+  - AWS::LanguageExtensions
+  - AWS::Serverless-2016-10-31
 Description: AWS Serverless Spring Boot 2 API - org.example::spring-boot-lambda
 Globals:
   Api:
@@ -12,6 +14,7 @@ Parameters:
   LocalDev:
     Type: String
     Default: false
+    
 
 Conditions:
   IsLocalDevEnv: !Equals [ !Ref LocalDev, true ]
@@ -34,14 +37,36 @@ Resources:
       FunctionName: SpringBootAPIHandler
       Handler: com.javatechie.StreamLambdaHandler::handleRequest
       Runtime: java21
+      
+      #CodeUri:!If
+      #  - IsLocalEnvironment
+      #  - # This S3 object structure is for LocalStack hot-reloading
+      #    Bucket: "hot-reload"
+      #    Key:!Ref LocalLambdaHostPath
+      #  - # This local path is for 'sam build' to package for AWS deployment.
+      #    # It should point to your Spring Boot project's buildable source or pre-built JAR directory.
+      #   ./SpringBootLambdaFunction/
+      
+      
+      #CodeUri:!If
+      #  - IsLocalDevEnv # Condition to check
+      #  - Bucket: hot-reload # Value if IsLocalEnvironment is true
+      #    Key: $HOST_LAMBDA_DIR/lambda-functions/restApi/target/spring-boot-rest-api-lambda
+      #  - SpringBootLambdaFunction
 
-
-      # This works but I want to use live reloading on local. I still want to use this when deploying to the cloud. 
-      #CodeUri: ./lambda-functions/restApi
 
       CodeUri: 
-        Bucket: hot-reload
-        Key: /home/jfaulkner/CodeDemos/LambdaTuts/aws-lambda/lambda-functions/restApi/target/spring-boot-rest-api-lambda
+        !If 
+          - IsLocalDevEnv
+          - Bucket: hot-reload
+            Key: $HOST_LAMBDA_DIR/lambda-functions/restApi/target/spring-boot-rest-api-lambda
+          - ./lambda-functions/restApi
+
+      #CodeUri: ./lambda-functions/restApi
+
+      #CodeUri: 
+      #  Bucket: hot-reload
+      #  Key: /home/jfaulkner/CodeDemos/LambdaTuts/aws-lambda/lambda-functions/restApi/target/spring-boot-rest-api-lambda
 
       MemorySize: 512
       Policies:
