@@ -17,6 +17,11 @@ The project defines a simple `/ping` resource that can accept `GET` requests wit
 * [SAM Local](https://github.com/localstack/aws-sam-cli-local)
 
 
+Open the project using VS Code 
+```
+code ServerlessApp.code-workspace
+```
+
 ## Building the project (optional)
 You can build the Java project directly using the Maven wrapper if you wish. This is optional since samlocal build will build the java project automatically. 
 ```bash

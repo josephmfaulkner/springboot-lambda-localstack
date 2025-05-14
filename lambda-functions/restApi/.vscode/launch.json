@@ -3,12 +3,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Remote JVM on LS Debug",
-            "projectRoot": "${workspaceFolder}",
+            "name": "Debug RestAPI - Remote Localstack",
             "request": "attach",
             "hostName": "localhost",
             "preLaunchTask": "Wait Remote Debugger Server",
-            "port": 5050
+            "port": 5050,
         }
     ]
 }

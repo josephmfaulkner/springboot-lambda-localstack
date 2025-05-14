@@ -1,0 +1,12 @@
+{
+    "folders": [
+      {
+        "name": "/",
+        "path": "./"
+      },
+      {
+        "name": "RestAPI Lambda",
+        "path": "lambda-functions/restApi"
+      }
+    ]
+  }
