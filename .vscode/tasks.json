@@ -1,0 +1,67 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start/Deploy Localstack (Dockercompose)",
+            "type": "shell",
+            "command": "./_bash_scripts/start-localstack.sh",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+              }           
+        },
+        {
+            "label": "Stop Localstack (Dockercompose)",
+            "type": "shell",
+            "command": "./_bash_scripts/stop-localstack.sh",
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            }           
+        },
+        {
+            "label": "Rebuild All Services (skip tests)",
+            "type": "shell",
+            "command": "./mvnw",
+            "args": ["package", "-Dmaven.test.skip"],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+              }
+        },
+        {
+            "label": "Run Java Tests",
+            "type": "shell",
+            "command": "./mvnw",
+            "args": ["test"],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+              }
+        },
+        {
+            "label": "Clean and Build All Services",
+            "type": "shell",
+            "command": "./mvnw",
+            "args": ["clean", "package"],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": false
+              }
+        },
+        {
+            "label": "Test Ping Local Services", 
+            "type": "shell",
+            "command": "_bash_scripts/test-ping-local-services.sh",
+            "group": {
+                "kind": "test",
+                "isDefault": false
+            }
+        }
+    ]
+}
