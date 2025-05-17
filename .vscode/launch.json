@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Debug All Services",
+            "configurations": [
+                "restApi - Debug RestAPI - Remote Localstack",
+                "restApi_B - Debug RestAPI - Remote Localstack"
+            ]
+        }
+    ]
+}
