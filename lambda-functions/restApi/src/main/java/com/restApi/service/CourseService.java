@@ -1,7 +1,8 @@
-package com.javatechie.service;
+package com.restApi.service;
 
-import com.javatechie.dto.Course;
 import org.springframework.stereotype.Service;
+
+import com.restApi.dto.Course;
 
 import java.util.ArrayList;
 import java.util.List;

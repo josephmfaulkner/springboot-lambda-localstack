@@ -1,12 +1,12 @@
-package com.javatechie.service;
+package com.restApi.service;
 
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.javatechie.dto.Message;
-import com.javatechie.repo.MessageRepo;
+import com.restApi.dto.Message;
+import com.restApi.repo.MessageRepo;
 
 @Service
 public class MessageService {

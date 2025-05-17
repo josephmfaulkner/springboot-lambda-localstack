@@ -1,4 +1,4 @@
-package com.javatechie;
+package com.restApi;
 
 
 import com.amazonaws.serverless.exceptions.ContainerInitializationException;

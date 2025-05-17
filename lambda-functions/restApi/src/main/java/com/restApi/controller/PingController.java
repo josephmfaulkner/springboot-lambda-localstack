@@ -1,4 +1,4 @@
-package com.javatechie.controller;
+package com.restApi.controller;
 
 
 import org.springframework.web.bind.annotation.*;

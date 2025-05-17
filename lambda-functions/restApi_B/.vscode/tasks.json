@@ -1,0 +1,10 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+          "label": "restApiB - Wait Remote Debugger Server",
+          "type": "shell",
+          "command": "while [[ -z $(docker ps | grep :5051) ]]; do sleep 1; done; sleep 1; "
+        }
+    ]
+}

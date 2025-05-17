@@ -35,11 +35,11 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: SpringBootAPIHandler
-      Handler: com.javatechie.StreamLambdaHandler::handleRequest
+      Handler: com.restApi.StreamLambdaHandler::handleRequest
       Runtime: java21
-      CodeUri: ./lambda-functions/restApi
-      #  Bucket: hot-reload
-      #  Key: $HOST_LAMBDA_DIR/lambda-functions/restApi/target/spring-boot-rest-api-lambda
+      CodeUri: #./lambda-functions/restApi
+        Bucket: hot-reload
+        Key: $HOST_LAMBDA_DIR/lambda-functions/restApi/target/spring-boot-rest-api-lambda
       MemorySize: 512
       Policies:
         - AWSLambdaBasicExecutionRole
@@ -72,7 +72,7 @@ Resources:
         Variables:
           !If
             - IsLocalDevEnv
-            - _JAVA_OPTIONS: "-Xshare:off -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:5050"
+            - _JAVA_OPTIONS: "-Xshare:off -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:5061"
               AWS_ENDPOINT: "https://localhost.localstack.cloud:4566"
               AWS_REGION: "us-west-2"
             - {} # No variables needed for non-local environments
@@ -92,6 +92,43 @@ Resources:
         WriteCapacityUnits: 2
 
 
+  ApiGatewayBApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: ApiGatewayBApi
+      Description: Application REST API B Endpoint
+      StageName: !Ref Stage
+      PropagateTags: true
+      Tags:
+        _custom_id_: appapib
+
+  SpringBootLambdaBFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: SpringBootAPIBHandler
+      Handler: com.restApiB.StreamLambdaHandler::handleRequest
+      Runtime: java21
+      CodeUri: #./lambda-functions/restApi_B
+        Bucket: hot-reload
+        Key: $HOST_LAMBDA_DIR/lambda-functions/restApi_B/target/spring-boot-rest-api-b-lambda
+      MemorySize: 512
+      Timeout: 30
+      Events:
+        ProxyResource:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: ApiGatewayBApi
+            Path: /{proxy+}
+            Method: any
+      Environment:
+        Variables:
+          !If
+            - IsLocalDevEnv
+            - _JAVA_OPTIONS: "-Xshare:off -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=0.0.0.0:5051"
+            - {} # No variables needed for non-local environments
+
+
 Outputs:
 
   DynamoDBTableName:
@@ -105,6 +142,13 @@ Outputs:
     Value: !Sub 'http://${ApiGatewayApi}.execute-api.localhost.localstack.cloud:4566/${Stage}/ping'
     Export:
       Name: LocalStackLambdaApiPing
+
+  LocalStackLambdaApiBTest:
+    Description: URL for Lambda application running on Localstack
+    Value: !Sub 'http://${ApiGatewayBApi}.execute-api.localhost.localstack.cloud:4566/${Stage}/test'
+    Export:
+      Name: LocalStackLambdaApiPing
+
   CloudLambdaApi:
     Description: URL for application when App is deployed to AWS Cloud
     Value: !Sub 'https://${ApiGatewayApi}.execute-api.${AWS::Region}.amazonaws.com/${Stage}/ping'

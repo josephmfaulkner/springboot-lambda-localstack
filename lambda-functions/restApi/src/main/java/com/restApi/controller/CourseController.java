@@ -1,11 +1,12 @@
-package com.javatechie.controller;
+package com.restApi.controller;
 
-import com.javatechie.dto.Course;
-import com.javatechie.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.restApi.dto.Course;
+import com.restApi.service.CourseService;
 
 import java.util.List;
 import java.util.Optional;

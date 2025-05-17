@@ -3,11 +3,11 @@
     "configurations": [
         {
             "type": "java",
-            "name": "restApi - Debug RestAPI - Remote Localstack",
+            "name": "restApi_B - Debug RestAPI - Remote Localstack",
             "request": "attach",
             "hostName": "localhost",
-            "preLaunchTask": "restApi - Wait Remote Debugger Server",
-            "port": 5061,
+            "preLaunchTask": "restApiB - Wait Remote Debugger Server",
+            "port": 5051,
         }
     ]
 }

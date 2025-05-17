@@ -7,6 +7,10 @@
       {
         "name": "RestAPI Lambda",
         "path": "lambda-functions/restApi"
+      },
+      {
+        "name": "RestAPI B Lambda",
+        "path": "lambda-functions/restApi_B"
       }
     ]
   }
