@@ -8,13 +8,13 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.context.annotation.Import;
 
-import com.restApi.controller.PingController;
+import com.restApi.controller.TestController;
 
 
 @SpringBootApplication
 // We use direct @Import instead of @ComponentScan to speed up cold starts
 // @ComponentScan(basePackages = "org.example.controller")
-@Import({ PingController.class })
+@Import({ TestController.class })
 @EnableAutoConfiguration(exclude = {
         DataSourceAutoConfiguration.class, // No JPA
 		DataSourceTransactionManagerAutoConfiguration.class, 

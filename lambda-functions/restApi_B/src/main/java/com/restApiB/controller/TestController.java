@@ -10,11 +10,11 @@ import java.util.Map;
 
 @RestController
 @EnableWebMvc
-public class PingController {
+public class TestController {
     @RequestMapping(path = "/test", method = RequestMethod.GET)
     public Map<String, String> ping() {
-        Map<String, String> pong = new HashMap<>();
-        pong.put("message", "Hello from Test API B!");
-        return pong;
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Hello from Test API B!");
+        return response;
     }
 }

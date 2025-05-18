@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x #echo on
 
 # Define the path to your Docker Compose file (optional if it's in the same dir)
 COMPOSE_FILE="docker-compose.yml"
@@ -40,7 +41,7 @@ STACK_EXISTS=$(awslocal cloudformation describe-stacks --region "$REGION" --stac
 if [ $? -eq 0 ]; then
     echo "Stack '$STACK_NAME' exists. Deleting it..."
     #awslocal cloudformation delete-stack --region "$REGION" --stack-name "$STACK_NAME"
-    samlocal delete --config-file=$CONFIG_FILE
+    samlocal delete --config-file=$CONFIG_FILE --no-prompts
 
     echo "Waiting for stack deletion to complete..."
     awslocal cloudformation wait stack-delete-complete --region "$REGION" --stack-name "$STACK_NAME"

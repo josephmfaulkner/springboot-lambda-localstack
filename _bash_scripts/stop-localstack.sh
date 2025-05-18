@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x #echo on
 
 # Define the path to your Docker Compose file
 COMPOSE_FILE="docker-compose.yml"

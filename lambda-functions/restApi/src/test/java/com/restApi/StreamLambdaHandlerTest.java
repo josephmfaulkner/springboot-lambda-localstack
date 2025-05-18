@@ -34,7 +34,7 @@ public class StreamLambdaHandlerTest {
 
     @Test
     public void ping_streamRequest_respondsWithHello() {
-        InputStream requestStream = new AwsProxyRequestBuilder("/ping", HttpMethod.GET)
+        InputStream requestStream = new AwsProxyRequestBuilder("/test", HttpMethod.GET)
                                             .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON)
                                             .buildStream();
         ByteArrayOutputStream responseStream = new ByteArrayOutputStream();
@@ -47,7 +47,7 @@ public class StreamLambdaHandlerTest {
 
         assertFalse(response.isBase64Encoded());
 
-        assertTrue(response.getBody().contains("pong"));
+        assertTrue(response.getBody().contains("message"));
         assertTrue(response.getBody().contains("Hello"));
 
         assertTrue(response.getMultiValueHeaders().containsKey(HttpHeaders.CONTENT_TYPE));
