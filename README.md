@@ -22,130 +22,99 @@ Open the project using VS Code
 ```
 code ServerlessApp.code-workspace
 ```
+## Try it yourself
 
-## Building the project
-Build the Java project using the Maven wrapper
-```bash
-./mvnw clean install
-```
+### Building the project
+Build the Java code using VS Code task `Clean and Build All Services` by either 
+- Navigating from the main Toolbar `Terminal` > `Run Task` and select `Clean and Build All Services`
+- Use keyboard shortcut `ctrl + shift + p` to open the Command Palette and select `Clean and Build All Services`
 
-## Deploying and running on LocalStack
-First, spin up LocalStack on Docker Compose
-```bash
-docker compose up
-```
-Then, in another tab, run: 
-```bash
-samlocal build --template-file=template_local.yml
-samlocal deploy --config-file=samconfig_local.yaml --no-confirm-changeset
-```
-After running these steps, you should be presented with an endpoint you can use to test the API on local: 
+
+### Deploying and running on LocalStack
+To spin up LocalStack on Docker Compose and deploy the Serverless app to it, run the VS Code Task: 
+`Start/Deploy Localstack (Dockercompose)`
+
+After running these steps, you should be presented with two local endpoints you can use to test the API on local: 
 ```
 CloudFormation outputs from deployed stack
 ------------------------------------------
 Outputs                                                                                                              
 ------------------------------------------
-Key                 LocalStackLambdaApiPing                                                                          
-Description         URL for Lambda application running on Localstack                                                 
-Value               http://appapi.execute-api.localhost.localstack.cloud:4566/local/ping  
+Key                 LocalStackLambdaApiPing                                                                                                                       
+Description         URL for Lambda application running on Localstack                                                                                              
+Value               http://appapi.execute-api.localhost.localstack.cloud:4566/local/ping                                                                          
+
+Key                 LocalStackLambdaApiBTest                                                                                                                      
+Description         URL for Lambda application running on Localstack                                                                                              
+Value               http://appapib.execute-api.localhost.localstack.cloud:4566/local/test 
 ```
 
-You can try this endpoint yourself from your terminal:
+You can try these out yourself using the VS Code Task `Test Ping Local Services`
+
+The terminal output should look something like this: 
+
 ```bash
-curl http://appapi.execute-api.localhost.localstack.cloud:4566/local/ping   | jq
-```
-After some delay, you should see a response like this: 
-```
++ curl http://appapi.execute-api.localhost.localstack.cloud:4566/local/test
++ jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    50  100    50    0     0      9      0  0:00:05  0:00:05 --:--:--    10
 {
-  "pong": "Hello from the Ping Controller!"
+  "message": "Hello from the Main Lambda REST API!"
+}
++ curl http://appapib.execute-api.localhost.localstack.cloud:4566/local/test
++ jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    36  100    36    0     0      8      0  0:00:04  0:00:04 --:--:--     8
+{
+  "message": "Hello from Test API B!"
 }
 ```
 
-## Make a change, rebuild and reload
-Let's try making a small change to the API and rebuilding the project to see the change running through the API endpoint.
+### Make a change, rebuild and reload
+Let's try making some small changes to the API services and rebuilding the project to see the changes running through the API endpoints.
 
 Change line 17 of `
 lambda-functions/restApi/src/main/java/com/javatechie/controller/PingController.java`
 
 For example:
 ```
-pong.put("pong", "Hello from the Lambda REST API! Nice to meet you!!!");
+response.put("message", "Hello from the Main Lambda REST API! Nice to meet you!");
 ```
-Then, run this command to rebuild the project:
+
+Change line 17 of `lambda-functions/restApi_B/src/main/java/com/restApiB/controller/TestController.java`
+
+For example: 
 ```
-# don't run the clean task or this won't work
-./mvnw package -Dmaven.test.skip
+response.put("message", "Hello from Test API B! I think I've seen you before.");
 ```
-Let's see what happens now when we hit the api endpoint again
-```bash
-curl http://appapi.execute-api.localhost.localstack.cloud:4566/local/ping   | jq
+Now, use VS Code Task `Rebuild All Services (skip tests)` to rebuild the services and run `Test Ping Local Services` again to see the changes take effect: 
+
 ```
-You should now see a response with the new message:
-```
++ curl http://appapi.execute-api.localhost.localstack.cloud:4566/local/test
++ jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    68  100    68    0     0     15      0  0:00:04  0:00:04 --:--:--    15
 {
-  "pong": "Hello from the Lambda REST API! Nice to meet you!!!"
+  "message": "Hello from the Main Lambda REST API! Nice to meet you!"
+}
++ curl http://appapib.execute-api.localhost.localstack.cloud:4566/local/test
++ jq
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    67  100    67    0     0     18      0  0:00:03  0:00:03 --:--:--    18
+{
+  "message": "Hello from Test API B!  I think I've seen you before."
 }
 ```
-## Live Debugging
-Set a few breakpoints in your VS Code IDE, select `Run and Debug` from the left side menu and run the `Remote JVM on LS Debug` launch configuration. Once you hit an API endpoint, the livedebugging should kick in.
+
+### Live debugging
+
+First set some breakpoints in the 'Test' controllers. Then, open `Run and Debug` (shortcut `ctrl + shift + d`) and select `Debug All Services`. When you run `Test Ping Local Services`, you should see the app pause at the breakpoints you set. 
 
 
-
-## Deploying to the cloud
-
-```
-samlocal build --template-file=template_local.yml
-samlocal deploy --config-file=samconfig_local.yaml --no-confirm-changeset
-```
-
-
-
-## Testing locally with the SAM CLI
-
-From the project root folder - where the `template.yml` file is located - start the API with the SAM CLI.
-
-```bash
-$ sam local start-api
-
-...
-Mounting com.amazonaws.serverless.archetypes.StreamLambdaHandler::handleRequest (java11) at http://127.0.0.1:3000/{proxy+} [OPTIONS GET HEAD POST PUT DELETE PATCH]
-...
-```
-
-Using a new shell, you can send a test ping request to your API:
-
-```bash
-$ curl -s http://127.0.0.1:3000/ping | jq
-
-{
-    "pong": "Hello, World!"
-}
-``` 
-
-## Deploying to AWS
-To deploy the application in your AWS account, you can use the SAM CLI's guided deployment process and follow the instructions on the screen
-
-```
-$ sam deploy --guided
-```
-
-Once the deployment is completed, the SAM CLI will print out the stack's outputs, including the new application URL. You can use `curl` or a web browser to make a call to the URL
-
-```
-...
--------------------------------------------------------------------------------------------------------------
-OutputKey-Description                        OutputValue
--------------------------------------------------------------------------------------------------------------
-SpringBootLambdaApi - URL for application            https://xxxxxxxxxx.execute-api.us-west-2.amazonaws.com/Prod/pets
--------------------------------------------------------------------------------------------------------------
-```
-
-Copy the `OutputValue` into a browser or use curl to test your first request:
-
-```bash
-$ curl -s https://xxxxxxx.execute-api.us-west-2.amazonaws.com/Prod/ping | jq
-
-{
-    "pong": "Hello, World!"
-}
-```
+### Stop and spin down Localstack (Docker compose)
+Finally, to stop Localstack, run VS Task `Stop Localstack (Dockercompose)`
+Note that since Localstack is ephemeral by default, this will remove the deployed application as well. 
