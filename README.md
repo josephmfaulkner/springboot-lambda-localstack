@@ -114,7 +114,8 @@ Now, use VS Code Task `Rebuild All Services (skip tests)` to rebuild the service
 
 First set some breakpoints in the 'Test' controllers. Then, open `Run and Debug` (shortcut `ctrl + shift + d`) and select `Debug All Services`. When you run `Test Ping Local Services`, you should see the app pause at the breakpoints you set. 
 
-[Video demonstrating live debugging two Lambda Functions at Once](DOCS/assets/debug_APIs.mp4)
+https://github.com/user-attachments/assets/3bc87153-993c-402c-9554-d6c364db1bc5
+
 
 ### Stop and spin down Localstack (Docker compose)
 Finally, to stop Localstack, run VS Task `Stop Localstack (Dockercompose)`
