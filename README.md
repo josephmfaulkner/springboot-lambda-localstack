@@ -11,8 +11,6 @@ This proof of concept is a work in progress, with additional features planned:
 - Upload files to S3
 - Publish/Consume AWS SNS Messages
 
-The spring-boot-lambda project, created with [`aws-serverless-java-container`](https://github.com/aws/serverless-java-container).
-
 ## Pre-requisites
 * [Visual Studio Code](https://code.visualstudio.com/)
 * [Java21](https://openjdk.org/projects/jdk/21/)
@@ -120,7 +118,7 @@ Now, use VS Code Task `Rebuild All Services (skip tests)` to rebuild the service
 
 First set some breakpoints in the 'Test' controllers. Then, open `Run and Debug` (shortcut `ctrl + shift + d`) and select `Debug All Services`. When you run `Test Ping Local Services`, you should see the app pause at the breakpoints you set. 
 
-https://github.com/user-attachments/assets/3bc87153-993c-402c-9554-d6c364db1bc5
+https://github.com/user-attachments/assets/48c9b691-f0a9-42c4-b416-f7b9f028b0e8
 
 
 ### Stop and spin down Localstack (Docker compose)
