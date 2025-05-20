@@ -1,11 +1,17 @@
 # spring-boot-lambda serverless API on Localstack
 
-This is a simple project that demonstrates how to deploy and run a SpringBoot application as a Lambda function locally using [Localstack](https://www.localstack.cloud/) (running in Docker).
+This is a simple project that demonstrates how to deploy, run and debug Java based Lambda functions using [Localstack](https://www.localstack.cloud/) (running in Docker).
+
+- Hot swapping code changes without redeploying 
+- Live debugging multiple Lambda functions running at once
+
+This proof of concept is a work in progress, with additional features planned: 
+
+- Simple GUI
+- Upload files to S3
+- Publish/Consume AWS SNS Messages
 
 The spring-boot-lambda project, created with [`aws-serverless-java-container`](https://github.com/aws/serverless-java-container).
-
-The project defines a simple `/ping` resource that can accept `GET` requests with its tests.
-
 
 ## Pre-requisites
 * [Visual Studio Code](https://code.visualstudio.com/)
