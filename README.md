@@ -48,7 +48,7 @@ Outputs
 ------------------------------------------
 Key                 LocalStackLambdaApiPing                                                                                                                       
 Description         URL for Lambda application running on Localstack                                                                                              
-Value               http://appapi.execute-api.localhost.localstack.cloud:4566/local/ping                                                                          
+Value               http://appapi.execute-api.localhost.localstack.cloud:4566/local/test                                                                          
 
 Key                 LocalStackLambdaApiBTest                                                                                                                      
 Description         URL for Lambda application running on Localstack                                                                                              

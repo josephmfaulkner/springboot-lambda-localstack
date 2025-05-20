@@ -12,5 +12,11 @@
         "name": "RestAPI B Lambda",
         "path": "lambda-functions/restApi_B"
       }
-    ]
+    ],
+    "settings": {
+      "java.project.sourcePaths": [
+        "lambda-functions/restApi",
+        "lambda-functions/restApi_B"
+      ]
+    }
   }
